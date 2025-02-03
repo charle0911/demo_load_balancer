@@ -25,7 +25,7 @@ The response to client will be added the src attribute in the header. To make us
 
 ### Request
 ``` sh
-curl -s -D - -X POST http://localhost:8090/api/route \
+curl --raw -s -D - -X POST http://localhost:8090/api/route \
 -H "Content-Type: application/json" \
 -d '{"game":"Mobile Legends", "gamerID":"GYUTDTE", "points":20}'
 ```

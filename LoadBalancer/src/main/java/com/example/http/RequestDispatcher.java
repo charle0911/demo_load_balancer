@@ -22,6 +22,7 @@ public class RequestDispatcher {
 
         try (OutputStream os = connection.getOutputStream()) {
             os.write(jsonPayload.getBytes(StandardCharsets.UTF_8));
+            os.flush();
         }
 
         int responseCode = connection.getResponseCode();

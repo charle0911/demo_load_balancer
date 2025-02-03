@@ -37,9 +37,10 @@ public class RouteHandler implements HttpHandler {
                     HttpResponse response = requestDispatcher.forwardRequest(endPointPath, requestBody);
 
                     exchange.getResponseHeaders().set("src", endPointPath);
-                    exchange.sendResponseHeaders(response.statusCode(), response.body().length());
+                    exchange.sendResponseHeaders(response.statusCode(), 0);
                     try (OutputStream os = exchange.getResponseBody()) {
                         os.write(response.body().getBytes(StandardCharsets.UTF_8));
+                        os.flush();
                     }
                     return;
                 } catch (Exception e) {
