@@ -1,0 +1,5 @@
+server:
+  port: 8081
+register:
+  domain: "http://localhost"
+  port: 8090
