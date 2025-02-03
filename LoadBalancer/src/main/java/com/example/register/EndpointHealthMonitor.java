@@ -83,7 +83,7 @@ public class EndpointHealthMonitor {
             }
             String healthCheckEndpoint = endpoint + "health";
             HttpResponse httpResponse = requestDispatcher.forwardRequest(healthCheckEndpoint);
-            log.info("Endpoint {}, Response Code {}, ", healthCheckEndpoint, httpResponse);
+            log.debug("Endpoint {}, Response Code {}, ", healthCheckEndpoint, httpResponse);
             return httpResponse.statusCode() == 200;
         } catch (Exception e) {
             log.error("Health check fail", e);
