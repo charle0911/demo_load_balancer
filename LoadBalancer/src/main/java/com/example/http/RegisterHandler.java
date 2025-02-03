@@ -23,29 +23,30 @@ public class RegisterHandler implements HttpHandler {
 
     @Override
     public void handle(HttpExchange exchange) throws IOException {
+        if (!"POST".equalsIgnoreCase(exchange.getRequestMethod())) {
+            sendResponse(exchange, HttpStatus.METHOD_NOT_ALLOWED, Map.of("error", "Method Not Allowed"));
+            return;
+        }
+
         try {
-            if ("POST".equalsIgnoreCase(exchange.getRequestMethod())) {
-                String requestBody = new String(exchange.getRequestBody().readAllBytes(), StandardCharsets.UTF_8);
-                log.info("Request Body: {}", requestBody);
-                try {
-                    JsonNode jsonNode = objectMapper.readTree(requestBody);
-                    if (jsonNode.has("endpoint")) {
-                        String endpoint = jsonNode.get("endpoint").asText();
-                        log.info("Register endpoint: {}", endpoint);
-                        boolean result = endpointRegister.register(endpoint);
-                        if (result) {
-                            sendResponse(exchange, HttpStatus.OK, Map.of("code", 10000));
-                        } else {
-                            sendResponse(exchange, HttpStatus.INTERNAL_SERVER_ERROR, Map.of("error", "Internal Server Error"));
-                        }
+            String requestBody = new String(exchange.getRequestBody().readAllBytes(), StandardCharsets.UTF_8);
+            log.info("Request Body: {}", requestBody);
+            try {
+                JsonNode jsonNode = objectMapper.readTree(requestBody);
+                if (jsonNode.has("endpoint")) {
+                    String endpoint = jsonNode.get("endpoint").asText();
+                    log.info("Register endpoint: {}", endpoint);
+                    boolean result = endpointRegister.register(endpoint);
+                    if (result) {
+                        sendResponse(exchange, HttpStatus.OK, Map.of("code", 10000));
                     } else {
-                        sendResponse(exchange, HttpStatus.BAD_REQUEST, Map.of("error", "Missing 'endpoint' field"));
+                        sendResponse(exchange, HttpStatus.INTERNAL_SERVER_ERROR, Map.of("error", "Internal Server Error"));
                     }
-                } catch (Exception e) {
-                    sendResponse(exchange, HttpStatus.BAD_REQUEST, Map.of("error", "Invalid JSON format"));
+                } else {
+                    sendResponse(exchange, HttpStatus.BAD_REQUEST, Map.of("error", "Missing 'endpoint' field"));
                 }
-            } else {
-                sendResponse(exchange, HttpStatus.METHOD_NOT_ALLOWED, Map.of("error", "Method Not Allowed"));
+            } catch (Exception e) {
+                sendResponse(exchange, HttpStatus.BAD_REQUEST, Map.of("error", "Invalid JSON format"));
             }
         } catch (Exception e) {
             log.error(e);

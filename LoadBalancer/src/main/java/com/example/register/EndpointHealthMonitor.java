@@ -37,7 +37,7 @@ public class EndpointHealthMonitor {
     }
 
     public boolean healthCheck(String endpoint) {
-        // norma
+        // normal
         long start = System.currentTimeMillis();
         boolean isHealthy = checkEndpoint(endpoint);
         log.debug("Endpoint {} is healthy: {}", endpoint, isHealthy);
