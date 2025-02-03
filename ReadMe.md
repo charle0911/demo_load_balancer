@@ -6,19 +6,32 @@ slowly?
 - How would I test this application
 ## Introduction
 ### Health Check
-Using the health check mechanism to solve the
+
 - How would my round robin API handle it if one of the application APIs goes down?
 
+Using the health check mechanism to solve the
 The loadbalancer will send the heart beat request to each application by x sec. 
 
 ### Probation Check
-If the response time is longer than threshold then system will put it into the probation list.
-And use the lower frequency to check the endpoint to wait the application machine cool down.
 - How would my round robin API handle it if one of the application APIs starts to go
 
-### Add the header attribute 'src'
-The response to client will be added the src attribute in the header. To make us can check where the response come from
+If the response time is longer than threshold then system will put it into the probation list.
+And use the lower frequency to check the endpoint to wait the application machine cool down.
+
+
+### Test
 - How would I test this application
+
+Use the Intellij import the whole maven project
+
+For loadbalancer, running the main function in the Application.class.
+
+For application, running the spring boot by different profile.
+- The profile one and two is the normal application
+- The profile three is the mock timeout application. (For testing slow response)
+
+The response to client will be added the src attribute in the header. To make us to check where the response come from
+
 
 
 ## Test script (CURL)
